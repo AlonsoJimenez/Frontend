@@ -37,3 +37,9 @@
     transform: rotate(360deg);
   }
 }
+
+.AddStop {
+  align-items: center;
+  text-align: center;
+  margin-top: 0in;
+}

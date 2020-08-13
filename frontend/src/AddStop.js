@@ -1,5 +1,5 @@
 import React from 'react';
-import './AddStop.css';
+import './App.css';
 import Container from 'react-bootstrap/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -22,15 +22,12 @@ var selectTo = [];
 export default class AddStop extends React.Component {
 
 
-  
-
   render() {
-    
 
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className = "AddStop">
+        <div className="AddStop">
           <Container>
             <Typography component="h1" variant="h3" >
               Railspot
@@ -39,14 +36,13 @@ export default class AddStop extends React.Component {
           <Typography component="h1" variant="h4">
             Agregar parada
         </Typography>
-          
-            <div>
-            <MenuFrom/>
-            </div>
-            <div>
-            <MenuTo/>
-            </div>
-          
+
+          <div>
+            <MenuFrom />
+          </div>
+          <div>
+            <MenuTo />
+          </div>
         </div>
       </Container>
 
@@ -61,55 +57,53 @@ class MenuTo extends React.Component {
     super();
     this.state = {
       optionsTo: [],
-      anchorEl: null 
+      anchorEl: null
     }
     apiGetList.get('/').then(res => {
-      console.log("listo")
-      console.log(res.data)
+      this.setState({ optionsTo: res.data })
     })
   }
 
-  render(){
-  const handleClick = (event) => {
-    
-    this.setState({anchorEl:event.currentTarget });
-  };
+  render() {
+    const handleClick = (event) => {
 
-  const handleClose = (name) => {
-    selectTo = [name]
-    console.log(selectTo);
-    this.setState({anchorEl: null});
-  };
-  return (
-    <Container>
-      <Row>
-        <Col>
-          <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-            Estacion
+      this.setState({ anchorEl: event.currentTarget });
+    };
+
+    const handleClose = (name) => {
+      selectTo = [name]
+      console.log(selectTo);
+      this.setState({ anchorEl: null });
+    };
+    return (
+      <Container>
+        <Row>
+          <Col>
+            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+              Estacion
                           </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={this.state.anchorEl}
-            open={Boolean(this.state.anchorEl)}
-            onClose={handleClose}
-          >
-            {this.state.optionsTo.map((option) => (
-              <MenuItem onClick={() => handleClose(option.name)} key={option.name} >{option.name}</MenuItem>
-            ))}
-          </Menu>
-        </Col>
-      </Row>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-      >
-        Aceptar
+            <Menu
+              id="simple-menu"
+              anchorEl={this.state.anchorEl}
+              open={Boolean(this.state.anchorEl)}
+              onClose={handleClose}
+            >
+              {this.state.optionsTo.map((option) => (
+                <MenuItem onClick={() => handleClose(option.station.name)} key={option.station.name} >{option.station.name}</MenuItem>
+              ))}
+            </Menu>
+          </Col>
+        </Row>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+        >
+          Aceptar
             </Button>
-    </Container>
-  )
-            }
+      </Container>
+    )
+  }
 }
 
 class MenuFrom extends React.Component {
@@ -118,51 +112,51 @@ class MenuFrom extends React.Component {
     super();
     this.state = {
       options: [],
-      anchorEl: null 
+      anchorEl: null
     }
     apiGetList.get('/').then(res => {
-      this.setState({options: res.data})
+      this.setState({ options: res.data })
     })
   }
 
-  render(){
-  const handleClick = (event) => {
-    
-    this.setState({anchorEl:event.currentTarget });
-  };
+  render() {
+    const handleClick = (event) => {
 
-  const handleClose = (name) => {
-    select = [name]
-    console.log(select);
-    this.setState({anchorEl: null});
-  };
-  return (
-    <Container>
-      <Row>
-        <Col><Typography component="h1" variant="h6">
-          De
+      this.setState({ anchorEl: event.currentTarget });
+    };
+
+    const handleClose = (name) => {
+      select = [name]
+      console.log(select);
+      this.setState({ anchorEl: null });
+    };
+    return (
+      <Container>
+        <Row>
+          <Col><Typography component="h1" variant="h6">
+            De
                     </Typography></Col>
-        <Col>
-          <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-            Estacion
+          <Col>
+            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+              Estacion
                         </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={this.state.anchorEl}
-            open={Boolean(this.state.anchorEl)}
-            onClose={handleClose}
-          >
-            {this.state.options.map((option) => 
-              <MenuItem onClick={() => handleClose(option.station.name)} key={option.station.name} >{option.station.name}</MenuItem>
-            )}
-          </Menu>
-        </Col>
-        <Col><Typography component="h1" variant="h6">
-          Hasta
+            <Menu
+              id="simple-menu"
+              anchorEl={this.state.anchorEl}
+              open={Boolean(this.state.anchorEl)}
+              onClose={handleClose}
+            >
+              {this.state.options.map((option) =>
+                <MenuItem onClick={() => handleClose(option.station.name)} key={option.station.name} >{option.station.name}</MenuItem>
+              )}
+            </Menu>
+          </Col>
+          <Col><Typography component="h1" variant="h6">
+            Hasta
                     </Typography></Col>
-      </Row>
+        </Row>
 
-    </Container>
-  )
-            }
+      </Container>
+    )
+  }
 }
