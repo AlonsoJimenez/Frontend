@@ -1,0 +1,41 @@
+{
+    "type": "TrainStationCollection",
+    "trainStations": [
+      {
+      "type": "TrainStation",
+      "data": {
+        "NAME": "Cartago"
+      },
+      "position": {
+        "coordinates": [9.8542492, -83.942699]
+      },
+      "connections": {
+        "stations": ["San José"]
+      }
+      },
+      {
+      "type": "TrainStation",
+      "data": {
+        "NAME": "San José"
+      },
+      "position": {
+        "coordinates": [9.9356284, -84.1483645]
+      },
+      "connections": {
+        "stations": ["Jacó", "Cartago"]
+      }
+      },
+      {
+      "type": "TrainStation",
+      "data": {
+        "NAME": "Jacó"
+      },
+      "position": {
+        "coordinates": [9.6158339, -84.6348524]
+      },
+      "connections": {
+        "stations": ["San José"]
+      }
+      }
+    ]
+  }
