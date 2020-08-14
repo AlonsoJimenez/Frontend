@@ -10,7 +10,7 @@ import {
 import mapStyles from "./mapStyles";
 
   
-  const Map = (props)=>{
+  const Map = (nodeData)=>{
     const [selectedPark, setSelectedPark] = useState(null);
 
     return(

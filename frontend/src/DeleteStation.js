@@ -20,13 +20,13 @@ var select = [];
 
 var selectTo = [];
 
-export default class AddStop extends React.Component {
+export default class EliminateStation extends React.Component {
 
 
   render() {
 
-    const handleAccept = async (stop1,stop2) =>{
-      axios.delete('http://localhost:9080/BackEnd/rest/admin/deleteStop?user=admin&password=1234abc&origin='+stop1+'&destiny='+stop2)
+    const handleAccept = async (stop1) =>{
+      axios.delete('http://localhost:9080/BackEnd/rest/admin/deleteStarion?user=admin&password=1234abc&name='+stop1)
     }
 
     return (
@@ -41,15 +41,6 @@ export default class AddStop extends React.Component {
           <Typography component="h1" variant="h4">
             Eliminar parada
         </Typography>
-        <Typography component="h1" variant="h6">
-            De
-                    </Typography>
-          <div>
-            <MenuFrom />
-          </div>
-          <Typography component="h1" variant="h6">
-            Hasta
-                    </Typography>
           <div>
             <MenuTo />
           </div>
@@ -57,7 +48,7 @@ export default class AddStop extends React.Component {
           type="submit"
           variant="contained"
           color="primary"
-          onClick = {handleAccept(select[0], selectTo[0])}
+          onClick = {handleAccept(selectTo[0])}
         >
           Aceptar
             </Button>
@@ -116,53 +107,3 @@ class MenuTo extends React.Component {
     )
   }
 }
-
-class MenuFrom extends React.Component {
-
-  constructor() {
-    super();
-    this.state = {
-      options: [],
-      anchorEl: null
-    }
-    apiGetList.get('/').then(res => {
-      this.setState({ options: res.data })
-    })
-  }
-
-  render() {
-    const handleClick = (event) => {
-
-      this.setState({ anchorEl: event.currentTarget });
-    };
-
-    const handleClose = (name) => {
-      select = [name]
-      console.log(select);
-      this.setState({ anchorEl: null });
-    };
-    return (
-      <Container>
-        <Row>
-          <Col>
-            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-              Estacion
-                        </Button>
-            <Menu
-              id="simple-menu"
-              anchorEl={this.state.anchorEl}
-              open={Boolean(this.state.anchorEl)}
-              onClose={handleClose}
-            >
-              {this.state.options.map((option) =>
-                <MenuItem onClick={() => handleClose(option.station.name)} key={option.station.name} >{option.station.name}</MenuItem>
-              )}
-            </Menu>
-          </Col>
-        </Row>
-
-      </Container>
-    )
-  }
-}
-
