@@ -9,9 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import Ticket from './Ticket';
+import AdminMenu from './AdminMenu';
 import { render } from '@testing-library/react';
 
+var password;
+var email;
 
 function Copyright() {
   return (
@@ -61,6 +63,8 @@ export default function SignIn() {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
+            value={email}
+            onChange={(event)=> email = event.target.value}
             variant="outlined"
             margin="normal"
             required
@@ -72,6 +76,8 @@ export default function SignIn() {
             autoFocus
           />
           <TextField
+            value={password}
+            onChange={(event)=> password = event.target.value}
             variant="outlined"
             margin="normal"
             required
@@ -83,12 +89,7 @@ export default function SignIn() {
             autoComplete="current-password"
           />
           <Button
-            onClick={()=> {ReactDOM.render(
-              <React.StrictMode>
-                <Ticket />
-              </React.StrictMode>,
-              document.getElementById('root')
-            );}}
+            onClick={()=> {checkLogIn(email, password)}}
             type="submit"
             fullWidth
             variant="contained"
@@ -106,3 +107,23 @@ export default function SignIn() {
     </Container>
   );
 }
+
+const checkLogIn = (email, password)=>{
+  if(email=="admin"){
+    if(password=="1234abc"){
+      console.log(true)
+      ReactDOM.render(
+        <React.StrictMode>
+          <AdminMenu />
+        </React.StrictMode>,
+        document.getElementById('root'));
+    }
+  }
+}
+/*
+ReactDOM.render(
+  <React.StrictMode>
+    <AdminMenu />
+  </React.StrictMode>,
+  document.getElementById('root')
+);*/

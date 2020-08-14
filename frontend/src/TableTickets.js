@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import AdminMenu from './AdminMenu'
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
@@ -88,7 +90,12 @@ const createRows = (object) =>{
 }
 
 const expirate  = (eliminationList) =>{
-    axios.delete(URL='http://localhost:9080/BackEnd/rest/admin/reservations?user=admin&password=1234abc', {eliminationList} )
+    axios({method: 'delete',url:'http://localhost:9080/BackEnd/rest/admin/expirate?user=admin&password=1234abc',data:eliminationList,headers: {'Content-Type': 'application/json'}}).then(ReactDOM.render(
+        <React.StrictMode>
+          <AdminMenu />
+        </React.StrictMode>,
+        document.getElementById('root')))
+
 }
 
 
@@ -109,7 +116,6 @@ export default class EnhancedTable extends React.Component {
 
   componentDidMount(){
       apiGetPurchase.get().then((res) =>{this.setState({rows: createRows(res.data)})})
-      console.log(this.state.rows)
   }
 
   render(){  
@@ -122,6 +128,7 @@ export default class EnhancedTable extends React.Component {
   };
 
   const handleNewRows = () => {
+    console.log(this.state.selected)
     expirate(this.state.selected);
   }
 

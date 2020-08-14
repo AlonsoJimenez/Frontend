@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
 import Container from 'react-bootstrap/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +10,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import AdminMenu from './AdminMenu'
+
 
 const apiGetList = axios.create({
   baseURL: 'http://localhost:9080/BackEnd/rest/user/stations'
@@ -26,7 +29,11 @@ export default class AddStop extends React.Component {
   render() {
 
     const handleAccept = async (stop1,stop2) =>{
-      axios.delete('http://localhost:9080/BackEnd/rest/admin/deleteStop?user=admin&password=1234abc&origin='+stop1+'&destiny='+stop2)
+      axios.delete('http://localhost:9080/BackEnd/rest/admin/deleteStop?user=admin&password=1234abc&origin='+stop1+'&destiny='+stop2).then(ReactDOM.render(
+        <React.StrictMode>
+          <AdminMenu />
+        </React.StrictMode>,
+        document.getElementById('root')))
     }
 
     return (
@@ -57,7 +64,7 @@ export default class AddStop extends React.Component {
           type="submit"
           variant="contained"
           color="primary"
-          onClick = {handleAccept(select[0], selectTo[0])}
+          onClick = {()=> {handleAccept(select[0], selectTo[0])}}
         >
           Aceptar
             </Button>

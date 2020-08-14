@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
 import Container from 'react-bootstrap/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import AdminMenu from './AdminMenu'
 
 const apiGetList = axios.create({
   baseURL: 'http://localhost:9080/BackEnd/rest/user/stations'
@@ -26,7 +28,13 @@ export default class EliminateStation extends React.Component {
   render() {
 
     const handleAccept = async (stop1) =>{
-      axios.delete('http://localhost:9080/BackEnd/rest/admin/deleteStarion?user=admin&password=1234abc&name='+stop1)
+      axios.delete('http://localhost:9080/BackEnd/rest/admin/deleteStation?user=admin&password=1234abc&name='+stop1).then(ReactDOM.render(
+        <React.StrictMode>
+          <AdminMenu />
+        </React.StrictMode>,
+        document.getElementById('root')
+      ))
+      
     }
 
     return (
@@ -48,7 +56,7 @@ export default class EliminateStation extends React.Component {
           type="submit"
           variant="contained"
           color="primary"
-          onClick = {handleAccept(selectTo[0])}
+          onClick = {() => {handleAccept(selectTo[0])}}
         >
           Aceptar
             </Button>

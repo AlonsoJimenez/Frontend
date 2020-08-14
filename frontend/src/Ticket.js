@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import './Ticket.css';
 import credentials from './credentials'
 import Map from './Map'
-import Graph from "react-graph-vis";
+import { Graph } from "react-d3-graph";
 import * as nodeData from "./train-stations.json"
 import './App.css';
 import Menu from '@material-ui/core/Menu';
@@ -17,6 +17,7 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Select } from '@material-ui/core';
+import { keys } from 'd3';
 
 
 const graphAux = {
@@ -75,10 +76,22 @@ function createData(id, label, color){
     return {id, label, color}
 }
 
+const extractKey = (object) =>{
+    var keys = [];
+    for(var k in object) keys.push(k);
+    return keys[0];
+}
+
+
+
+const createLinks = (object) =>{
+    const m = object.map((node)=>({source: node.station.name, target: extractKey(node.adjacentNodes)}))
+    return (m);
+}
+
 const createGraph = (object) =>{
-    const m =  object.map((node) => createData(node.station.name, node.station.name, "#28def7"))
+    const m =  object.map((node) => ({id: node.station.name}))
     console.log(m);
-    console.log(graphAux);
     return(m);
 }
 
@@ -87,20 +100,23 @@ export default class CenteredGrid extends React.Component {
     constructor() {
         super();
         this.state = {
-            nodes: [],
-            edges:[],
+            nodes: [{ id: "Harry" }, { id: "Sally" }, { id: "Alice" }],
+            links:[
+                { source: "Harry", target: "Sally" },
+                { source: "Harry", target: "Alice" },
+            ],
             //graph: graphAux,
             price: 0,
             ride: []
         }
     }
     
-    /*
+    
     componentDidMount() {
-        apiGetList.get('/').then( (res) => { this.setState({ nodes: createGraph(res.data) }) },
+        apiGetList.get('/').then( (res) => { this.setState({ nodes: createGraph(res.data), links: createLinks(res.data) }) },
         )
         
-    }*/
+    }
     
 
     render() {
@@ -109,6 +125,25 @@ export default class CenteredGrid extends React.Component {
             console.log("entramos")
             axios.post( URL='http://localhost:9080/BackEnd/rest/user/purchase?fromS='+fromS+'&toS='+toS+'&num='+num+'&email='+name).then((res) => {this.setState({price: res.data.price, ride: res.data.route})}, (error) =>{console.log(error)})
         }
+
+        const data = {
+            nodes: this.state.nodes ,
+            links: this.state.links,
+        };
+        
+        // the graph configuration, you only need to pass down properties
+        // that you want to override, otherwise default ones will be used
+        const myConfig = {
+            nodeHighlightBehavior: true,
+            node: {
+                color: "lightgreen",
+                size: 120,
+                highlightStrokeColor: "blue",
+            },
+            link: {
+                highlightColor: "lightblue",
+            },
+        };
         
         return (
             <Container >
@@ -122,28 +157,21 @@ export default class CenteredGrid extends React.Component {
           <Typography component="h1" variant="h4">
             Compra  tu tiquete
         </Typography>
-                            <Container>
-                                <Map
-                                    nodeData={nodeData}
-                                    googleMapURL={mapULR}
-                                    containerElement={<div style={{ height: '500px', width: "874px" }} />}
-                                    mapElement={<div style={{ height: '100%' }} />}
-                                    loadingElement={<p> Cargando </p>}
-                                />
-                            </Container>
+                            
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                         <Paper >
                             <Container >
-                                <Graph graph= {createGraphAux(this.state.nodes, this.state.edges)} options={options} events={events} style={{ height: "500px", width: "874px" }} />
-                            </Container>
+                            <Graph id="graph-id" data={data} config={myConfig} />                            </Container>
                         </Paper>
                     </Grid>
                     <Grid item xs={12}>
                         <Paper>
                             <form >
+                                <p>De</p>
                                 <MenuFrom />
+                                <p>Hasta</p>
                                 <MenuTo />
                                 <TextField value={this.state.textName} onChange={(event) =>textName = event.target.value} label="Nombre"/>
                                 <TextField value={this.state.textQuantity} onChange={(event) =>textQuantity= event.target.value} label="Cantidad" />
