@@ -75,7 +75,7 @@ export default class AddStop extends React.Component {
   }
 
 }
-
+      
 class MenuTo extends React.Component {
 
   constructor() {
@@ -142,7 +142,10 @@ class MenuFrom extends React.Component {
 
       this.setState({ anchorEl: event.currentTarget });
     };
-
+    /**
+     * @param name
+     * Maneja el caso donde quiere cerrar el menu
+     */
     const handleClose = (name) => {
       select = [name]
       console.log(select);

@@ -74,6 +74,9 @@ export default class CenteredGrid extends React.Component{
     }
   }
 
+  /**
+     * Agrega de manera asincrona la creacion de una parada de tren
+     */
   const addStop = (fromS, toS, distance)=>{
     axios.post('http://localhost:9080/BackEnd/rest/admin/newStop?user=admin&password=1234abc&origin='+fromS+'&destiny='+toS+'&distance='+distance).then(ReactDOM.render(
         <React.StrictMode>
@@ -81,7 +84,9 @@ export default class CenteredGrid extends React.Component{
         </React.StrictMode>,
         document.getElementById('root')))
   }
-
+    /**
+     * Agrega de manera asincrona la creacion de una estacion de tren
+     */
   const addStation = (name)=>{
     axios.post('http://localhost:9080/BackEnd/rest/admin/newStation?user=admin&password=1234abc&name='+name).then(ReactDOM.render(
         <React.StrictMode>
@@ -105,11 +110,18 @@ class MenuTo extends React.Component {
     }
   
     render() {
+      /**
+       * @param event 
+     * Maneja el evento donde se selecciona dicho menu
+     */
       const handleClick = (event) => {
   
         this.setState({ anchorEl: event.currentTarget });
       };
-  
+  /**
+       * @param event 
+     * Maneja el evento donde se cierra dicho menu
+     */
       const handleClose = (name) => {
         selectTo = [name]
         console.log(selectTo);
@@ -153,11 +165,19 @@ class MenuTo extends React.Component {
     }
   
     render() {
+      /**
+       * @param event 
+     * Maneja el evento donde se selecciona dicho menu
+     */
       const handleClick = (event) => {
   
         this.setState({ anchorEl: event.currentTarget });
       };
   
+      /**
+       * @param event 
+     * Maneja el evento donde se cierra dicho menu
+     */
       const handleClose = (name) => {
         select = [name]
         console.log(select);

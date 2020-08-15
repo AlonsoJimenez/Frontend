@@ -82,11 +82,19 @@ class MenuTo extends React.Component {
   }
 
   render() {
+    /**
+     * @param event
+     * Maneja el caso donde utiliza el click del menu
+     */
     const handleClick = (event) => {
 
       this.setState({ anchorEl: event.currentTarget });
     };
 
+    /**
+     * @param event
+     * Maneja el caso donde se cierra el menu
+     */
     const handleClose = (name) => {
       selectTo = [name]
       console.log(selectTo);

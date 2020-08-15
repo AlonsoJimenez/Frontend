@@ -1,10 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import './Ticket.css';
-import credentials from './credentials'
-import Map from './Map'
 import { Graph } from "react-d3-graph";
-import * as nodeData from "./train-stations.json"
 import './App.css';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -20,22 +17,14 @@ import { Select } from '@material-ui/core';
 import { keys } from 'd3';
 
 
-const graphAux = {
-    nodes: nodeData.trainStations.map((stations) => (
-        { id: stations.data.NAME, label: stations.data.NAME, color: "#28def7" }
-    )),
-    edges: [],
-};
 
-var enter = false;
-
+/**
+       * Funcion asincronica para obtener lista de estaciones disponibles
+     */
 const apiGetList = axios.create({
     baseURL: 'http://localhost:9080/BackEnd/rest/user/stations'
 })
 
-const apiSendInfor = axios.create({
-
-})
 
 var textName= "";
 var textQuantity= "";
@@ -44,38 +33,11 @@ var select = [];
 
 var selectTo = [];
 
-const mapULR = "https://maps.googleapis.com/maps/api/js?v=3.exp&key=" + credentials.mapsKey;
 
 
-
-const options = {
-    layout: {
-        hierarchical: false
-    },
-    edges: {
-        color: "#000000"
-    }
-};
-
-const events = {
-    select: function (event) {
-        var { nodes, edges } = event;
-        console.log("Selected nodes:");
-        console.log(nodes);
-        console.log("Selected edges:");
-        console.log(edges);
-    }
-};
-
-function createGraphAux(nodes, edges){
-    return {nodes, edges};
-}
-
-
-function createData(id, label, color){
-    return {id, label, color}
-}
-
+/**
+       * Extrae los valores de los destinos de los nodos
+     */
 const extractKey = (object) =>{
     var keys = [];
     for(var k in object) keys.push(k);
@@ -83,12 +45,17 @@ const extractKey = (object) =>{
 }
 
 
-
+/**
+       * Devuelve las aristas del nodo para su representacion grafica
+     */
 const createLinks = (object) =>{
     const m = object.map((node)=>({source: node.station.name, target: extractKey(node.adjacentNodes)}))
     return (m);
 }
 
+/**
+       *Crea el JSON del grafo para su visualizacion
+     */
 const createGraph = (object) =>{
     const m =  object.map((node) => ({id: node.station.name}))
     console.log(m);
@@ -120,6 +87,9 @@ export default class CenteredGrid extends React.Component {
     
 
     render() {
+        /**
+       * Funcion asincronica para realizar compra y obtener sus resultados
+     */
         const takeAction = (fromS, toS, name, num) => {
     
             console.log("entramos")
@@ -131,8 +101,7 @@ export default class CenteredGrid extends React.Component {
             links: this.state.links,
         };
         
-        // the graph configuration, you only need to pass down properties
-        // that you want to override, otherwise default ones will be used
+        
         const myConfig = {
             nodeHighlightBehavior: true,
             node: {
@@ -143,6 +112,7 @@ export default class CenteredGrid extends React.Component {
             link: {
                 highlightColor: "lightblue",
             },
+            directed: true,
         };
         
         return (
@@ -215,11 +185,19 @@ class MenuTo extends React.Component {
     }
 
     render() {
+        /**
+       * @param event 
+     * Maneja el evento donde se selecciona dicho menu
+     */
         const handleClick = (event) => {
 
             this.setState({ anchorEl: event.currentTarget });
         };
 
+        /**
+       * @param event 
+     * Maneja el evento donde se cierra dicho menu
+     */
         const handleClose = (name) => {
             selectTo = [name]
             console.log(selectTo);
@@ -263,11 +241,19 @@ class MenuFrom extends React.Component {
     }
 
     render() {
+        /**
+       * @param event 
+     * Maneja el evento donde se selecciona dicho menu
+     */
         const handleClick = (event) => {
 
             this.setState({ anchorEl: event.currentTarget });
         };
 
+        /**
+       * @param event 
+     * Maneja el evento donde se cierra dicho menu
+     */
         const handleClose = (name) => {
             select = [name]
             console.log(select);

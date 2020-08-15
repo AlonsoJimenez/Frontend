@@ -22,15 +22,16 @@ const apiGetPurchase = axios.create({
     baseURL: 'http://localhost:9080/BackEnd/rest/admin/reservations?user=admin&password=1234abc',
 })
 
+/**
+     * Crea el JSON donde  van a ir la informacion de los tiquetes
+     */
 function createData(user, from, to, number) {
   return { user, from, to, number};
 }
 
-const rowsAux = [
-  //createData("Alonso", "Cartago", "Paraiso", 3),
-  //createData("pp", "Cartago", "Paraiso", 3)
-];
-
+/**
+     * Compara a y b para poder ordenar la tabla
+     */
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -41,12 +42,19 @@ function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
+/**
+     * Funcion auxiliar par acomparacion de tabla
+     */
 function getComparator(order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+/**
+       * Funcion para acomodar de manera distita numericamente la tabla,
+       *  en teoria no se utiliza ya que el unico valor numerico es la cantidad de tiquetes
+     */
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -84,11 +92,17 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
+/**
+       * Crea las listas JSON para utlizar como filas en las tablas
+     */
 const createRows = (object) =>{
     const tr = object.map((data) => createData(data.email, data.startPoint, data.endPoint, data.numberOf))
     return tr;
 }
 
+/**
+       * Funcion asincronica para expirar las compras de los usuarios
+     */
 const expirate  = (eliminationList) =>{
     axios({method: 'delete',url:'http://localhost:9080/BackEnd/rest/admin/expirate?user=admin&password=1234abc',data:eliminationList,headers: {'Content-Type': 'application/json'}}).then(ReactDOM.render(
         <React.StrictMode>
@@ -133,7 +147,9 @@ export default class EnhancedTable extends React.Component {
   }
 
 
-
+  /**
+       * Maneja el click para las casillas
+     */
   const handleClick = (event, user) => {
     const selectedIndex = this.state.selected.indexOf(user);
     let newSelected = [];
@@ -154,17 +170,24 @@ export default class EnhancedTable extends React.Component {
     this.setState({selected:newSelected});
   };
 
+  /**
+       * Maneja evento para cambiar de pagina en la tabla
+     */
   const handleChangePage = (event, newPage) => {
     this.setState({page:newPage });
   };
 
-  
-
+  /**
+       * Maneja eventos para cambiar la cantidad de elementos en la tabla
+     */
   const handleChangeRowsPerPage = (event) => {
     this.setState({rowsPerPage: parseInt(event.target.value, 10)});
     this.setState({page:0 });
   };
 
+  /**
+       * Maneja evento para cambio de densidad de forma visual
+     */
   const handleChangeDense = (event) => {
     this.setState({dense: event.target.checked});
   };

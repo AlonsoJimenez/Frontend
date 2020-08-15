@@ -120,10 +120,3 @@ const checkLogIn = (email, password)=>{
     }
   }
 }
-/*
-ReactDOM.render(
-  <React.StrictMode>
-    <AdminMenu />
-  </React.StrictMode>,
-  document.getElementById('root')
-);*/

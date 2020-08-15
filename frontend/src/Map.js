@@ -9,7 +9,7 @@ import {
   } from 'react-google-maps'
 import mapStyles from "./mapStyles";
 
-  
+    
   const Map = (nodeData)=>{
     const [selectedPark, setSelectedPark] = useState(null);
 
