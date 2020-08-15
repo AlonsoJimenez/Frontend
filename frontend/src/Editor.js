@@ -14,9 +14,7 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-var distance= "";
 
-var name = "";
 
 var select = [];
 
@@ -28,6 +26,15 @@ const apiGetList = axios.create({
 
   
 export default class CenteredGrid extends React.Component{
+
+  constructor(){
+    super();
+    this.state = {
+      distance: "",
+      name: ""
+    }
+  }
+  
     
     render(){
     return (
@@ -38,8 +45,8 @@ export default class CenteredGrid extends React.Component{
                         <Paper >
                             <form  noValidate autoComplete="off">
                                 Agregar Nueva Estación.
-                                <TextField id="name" label="Nombre"  value={name} onChange={(event)=>{name= event.target.value}}/>
-                                <Button variant="outlined" color="secondary" onClick={() => {addStation(name)}}>
+                                <TextField id="name" label="Nombre"  value={this.state.name} onChange={(event)=>{this.setState({name: event.target.value}) }}/>
+                                <Button variant="outlined" color="secondary" onClick={() => {addStation(this.state.name)}}>
                                         Agregar
                                 </Button>
                             </form>
@@ -53,8 +60,8 @@ export default class CenteredGrid extends React.Component{
                                 <MenuFrom/>
                                 <p>Hasta</p>
                                 <MenuTo/>
-                                <TextField id="addKm" label="Distancia (Km)" value={distance} onChange={(event)=>{distance=event.target.value}} />
-                                <Button variant="outlined" color="secondary" onClick={() => {addStop(select[0],selectTo[0], distance )}}>
+                                <TextField id="addKm" label="Distancia (Km)" value={this.state.distance} onChange={(event)=>{this.setState({distance:event.target.value})}} />
+                                <Button variant="outlined" color="secondary" onClick={() => {addStop(select[0],selectTo[0], this.state.distance )}}>
                                         Agregar
                                 </Button>
                             </form>
@@ -76,7 +83,7 @@ export default class CenteredGrid extends React.Component{
   }
 
   const addStation = (name)=>{
-    axios.post('http://localhost:9080/BackEnd/rest/admin/newStop?user=admin&password=1234abc&name='+name).then(ReactDOM.render(
+    axios.post('http://localhost:9080/BackEnd/rest/admin/newStation?user=admin&password=1234abc&name='+name).then(ReactDOM.render(
         <React.StrictMode>
           <AdminMenu />
         </React.StrictMode>,

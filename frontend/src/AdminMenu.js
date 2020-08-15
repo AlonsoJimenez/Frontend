@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Typography from '@material-ui/core/Typography';
 import Editor from './Editor'
 import AddStop from './AddStop'
+import DeleteStation from './DeleteStation'
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -44,7 +45,7 @@ export default function App() {
           <Button
             onClick={() => {ReactDOM.render(
                 <React.StrictMode>
-                  <AddStop />
+                  <DeleteStation />
                 </React.StrictMode>,
                 document.getElementById('root')
               )}}
